@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <eelkabia@student.>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 19:27:15 by eelkabia          #+#    #+#             */
-/*   Updated: 2025/01/27 06:30:34 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/29 05:55:20 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,9 @@ typedef struct s_window
 typedef struct s_camera
 {
 	int			zoom;
-	int			angle_x;
-	int			angle_y;
-	int			angle_z;
+	double			angle_x;
+	double			angle_y;
+	double			angle_z;
 	int			offset_x;
 	int			offset_y;
 }				t_camera;
@@ -76,6 +76,7 @@ typedef struct s_fdf
 
 void			parse_map(char *filename, t_fdf *fdf);
 void			free_array(char **array);
-void	init_map(char *filename, t_fdf *fdf);
+void			init_map(char *filename, t_fdf *fdf);
 void			render_map(t_fdf *fdf);
+void	init_camera(t_fdf *fdf);
 #endif

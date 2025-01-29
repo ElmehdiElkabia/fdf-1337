@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <eelkabia@student.>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 13:02:15 by eelkabia          #+#    #+#             */
-/*   Updated: 2025/01/27 06:13:56 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/29 04:31:07 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,24 @@ int	key_hook(int keycode, t_fdf *fdf)
 		ft_destroy(fdf);
 		exit(0);
 	}
+	else if (keycode == 65361) // Left arrow key
+		fdf->camera.offset_x -= 10;
+	else if (keycode == 65363) // Right arrow key
+		fdf->camera.offset_x += 10;
+	else if (keycode == 65362) // Up arrow key
+		fdf->camera.offset_y -= 10;
+	else if (keycode == 65364) // Down arrow key
+		fdf->camera.offset_y += 10;
+	//for zooming in and out
+	else if (keycode == 61) // + key
+		fdf->camera.zoom += 1;
+	else if (keycode == 45) // - key
+		fdf->camera.zoom -= 1;
+	mlx_clear_window(fdf->window.mlx, fdf->window.win);
+	render_map(fdf);
 	return (0);
 }
-	 	//printf("keycode: %d\n", keycode);
+	 	// printf("keycode: %d\n", keycode);
 
 int	main(int argc, char **argv)
 {
@@ -58,6 +73,7 @@ int	main(int argc, char **argv)
 		init_fdf(&fdf);
 		init_map(argv[1], &fdf);
 		parse_map(argv[1], &fdf);
+		init_camera(&fdf);
 		render_map(&fdf);
 		mlx_key_hook(fdf.window.win, key_hook, &fdf);
 		mlx_loop(fdf.window.mlx);
