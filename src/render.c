@@ -12,12 +12,36 @@
 
 #include "../include/fdf.h"
 
+
+void	project_point(t_point *point, t_fdf *fdf)
+{
+	int		old_x;
+	int		old_y;
+
+	old_x = point->x;
+	old_y = point->y;
+
+	// Apply isometric projection
+	point->x = (old_x - old_y) * cos(0.523599);
+	point->y = (old_x + old_y) * sin(0.523599) - point->z;
+
+	// Apply zoom
+	point->x *= fdf->camera.zoom;
+	point->y *= fdf->camera.zoom;
+
+	// Apply centering
+	point->x += fdf->camera.offset_x;
+	point->y += fdf->camera.offset_y;
+}
+
 void	draw_line(t_point start, t_point end, t_fdf *fdf)
 {
 	t_point	delta;
 	t_point	sign;
 	int		error[2];
 
+	project_point(&start, fdf);
+	project_point(&end, fdf);
 	delta.x = abs(end.x - start.x);
 	delta.y = abs(end.y - start.y);
 	sign.x = start.x < end.x ? 1 : -1;
@@ -40,32 +64,10 @@ void	draw_line(t_point start, t_point end, t_fdf *fdf)
 	}
 }
 
-t_point	project_point(t_point point, t_fdf *fdf)
-{
-	t_point	proj;
-
-
-	proj.x = (point.x - point.y) * cos(0.5);
-	proj.y = (point.x + point.y) * sin(0.5) - point.z;
-
-	// Apply zoom
-	proj.x *= fdf->camera.zoom;
-	proj.y *= fdf->camera.zoom;
-
-	// Apply centering
-	proj.x += fdf->camera.offset_x;
-	proj.y += fdf->camera.offset_y;
-
-	proj.z = point.z;
-	proj.color = point.color;
-	return (proj);
-}
-
 void	render_map(t_fdf *fdf)
 {
 	int		x;
 	int		y;
-	t_point	point;
 
 	y = 0;
 	while (y < fdf->map.height)
@@ -73,11 +75,10 @@ void	render_map(t_fdf *fdf)
 		x = 0;
 		while (x < fdf->map.width)
 		{
-			point = project_point(fdf->map.points[y][x], fdf);
 			if (x < fdf->map.width - 1)
-				draw_line(point, project_point(fdf->map.points[y][x + 1], fdf), fdf);
+				draw_line(fdf->map.points[y][x],fdf->map.points[y][x + 1], fdf);
 			if (y < fdf->map.height - 1)
-				draw_line(point, project_point(fdf->map.points[y + 1][x], fdf), fdf);
+				draw_line(fdf->map.points[y][x],fdf->map.points[y + 1][x], fdf);
 			x++;
 		}
 		y++;
