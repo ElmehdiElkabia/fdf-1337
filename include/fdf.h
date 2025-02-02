@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <eelkabia@student.>                 +#+  +:+       +#+        */
+/*   By: eelkabia <eelkabia@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 19:27:15 by eelkabia          #+#    #+#             */
-/*   Updated: 2025/01/29 05:55:20 by marvin           ###   ########.fr       */
+/*   Updated: 2025/02/02 18:37:07 by eelkabia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,12 @@ typedef struct s_window
 typedef struct s_camera
 {
 	int			zoom;
-	double			angle_x;
-	double			angle_y;
-	double			angle_z;
+	double		angle_x;
+	double		angle_y;
+	double		angle_z;
 	int			offset_x;
 	int			offset_y;
+	int			projection;
 }				t_camera;
 
 typedef struct s_fdf
@@ -74,9 +75,23 @@ typedef struct s_fdf
 	t_camera	camera;
 }				t_fdf;
 
+typedef struct s_bresenham
+{
+	int			dx;
+	int			sx;
+	int			dy;
+	int			sy;
+	int			error;
+	int			error2;
+}				t_bresenham;
+
 void			parse_map(char *filename, t_fdf *fdf);
 void			free_array(char **array);
 void			init_map(char *filename, t_fdf *fdf);
 void			render_map(t_fdf *fdf);
-void	init_camera(t_fdf *fdf);
+void			init_camera(t_fdf *fdf);
+int				key_hook(int keycode, t_fdf *fdf);
+int			ft_destroy(t_fdf *fdf);
+void			project_point(t_point *point, t_fdf *fdf);
+int				ft_atoi_base(const char *str, int base);
 #endif

@@ -6,7 +6,7 @@
 /*   By: eelkabia <eelkabia@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 13:02:15 by eelkabia          #+#    #+#             */
-/*   Updated: 2025/02/02 21:53:06 by eelkabia         ###   ########.fr       */
+/*   Updated: 2025/02/02 22:36:50 by eelkabia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ void	init_camera(t_fdf *fdf)
 	fdf->camera.zoom = 10;
 	fdf->camera.angle_x = 0;
 	fdf->camera.angle_y = 0;
-	fdf->camera.angle_z = 1;
-	fdf->camera.offset_x = fdf->camera.zoom * fdf->map.width / 2;
-	fdf->camera.offset_y = fdf->camera.zoom * fdf->map.height / 2;
+	fdf->camera.angle_z = 0;
+	fdf->camera.offset_x = 0;
+	fdf->camera.offset_y = 0;
 	fdf->camera.projection = 1;
 }
 
@@ -53,7 +53,8 @@ int	main(int argc, char **argv)
 		parse_map(argv[1], &fdf);
 		init_camera(&fdf);
 		render_map(&fdf);
-		mlx_key_hook(fdf.window.win, key_hook, &fdf);
+		// mlx_key_hook(fdf.window.win, key_hook, &fdf);
+		mlx_hook(fdf.window.win, 2, 1L << 0, key_hook, &fdf);
 		mlx_hook(fdf.window.win, 17, 0, ft_destroy, &fdf);
 		mlx_loop(fdf.window.mlx);
 		ft_destroy(&fdf);

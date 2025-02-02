@@ -6,7 +6,7 @@
 /*   By: eelkabia <eelkabia@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 03:47:08 by marvin            #+#    #+#             */
-/*   Updated: 2025/02/02 21:57:20 by eelkabia         ###   ########.fr       */
+/*   Updated: 2025/02/02 22:54:07 by eelkabia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	ft_key_hook1(int keycode, t_fdf *fdf)
 
 int	ft_key_hook2(int keycode, t_fdf *fdf)
 {
-	if (keycode == 61 && fdf->camera.zoom < 100)
+	if (keycode == 61 && fdf->camera.zoom < 50)
 		fdf->camera.zoom += 1;
 	else if (keycode == 45 && fdf->camera.zoom > 1)
 		fdf->camera.zoom -= 1;
@@ -43,21 +43,20 @@ int	ft_key_hook2(int keycode, t_fdf *fdf)
 		fdf->camera.projection = 1;
 	else if (keycode == 50)
 		fdf->camera.projection = 0;
-	if (keycode == 102)
+	else if (keycode == 102)
 		fdf->camera.angle_x += 0.1;
-	if (keycode == 103)
+	else if (keycode == 103)
 		fdf->camera.angle_x -= 0.1;
-	if (keycode == 104)
+	else if (keycode == 104)
 		fdf->camera.angle_y += 0.1;
-	if (keycode == 106)
+	else if (keycode == 106)
 		fdf->camera.angle_y -= 0.1;
-	if (keycode == 107)
+	else if (keycode == 107)
 		fdf->camera.angle_z += 0.1;
-	if (keycode == 100)
+	else if (keycode == 100)
 		fdf->camera.angle_z -= 0.1;
 	else if (keycode == 101)
 		init_camera(fdf);
-	printf("keycode: %d\n", keycode);
 	render_map(fdf);
 	return (0);
 }
@@ -70,6 +69,7 @@ int	key_hook(int keycode, t_fdf *fdf)
 	else if (keycode == 65361 || keycode == 61 || keycode == 45 || keycode == 49
 		|| keycode == 50 || keycode == 103 || keycode == 104 || keycode == 101)
 		ft_key_hook2(keycode, fdf);
+	printf("keycode: %d\n", keycode);
 	return (0);
 }
 

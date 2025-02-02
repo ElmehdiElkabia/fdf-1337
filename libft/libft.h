@@ -6,7 +6,7 @@
 /*   By: eelkabia <eelkabia@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 10:26:12 by eelkabia          #+#    #+#             */
-/*   Updated: 2024/11/08 12:08:15 by eelkabia         ###   ########.fr       */
+/*   Updated: 2025/02/02 14:03:45 by eelkabia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ typedef struct s_list
 }					t_list;
 
 //-------------Libc functions--------------------//
-int	ft_atoi_base(const char *str, const char *base);
 int					ft_isalpha(int c);
 int					ft_isdigit(int c);
 int					ft_isalnum(int c);
