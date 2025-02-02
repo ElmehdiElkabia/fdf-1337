@@ -3,36 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: eelkabia <eelkabia@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 04:06:00 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/27 05:54:50 by marvin           ###   ########.fr       */
+/*   Updated: 2025/02/02 20:10:45 by eelkabia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf.h"
 
-void	free_array(char **array)
-{
-	int	i;
-
-	i = 0;
-	while (array[i])
-	{
-		free(array[i]);
-		i++;
-	}
-	free(array);
-}
-
 void	get_points(t_fdf *fdf, int i, int j, char **array)
 {
 	char	**z_color;
 
+	if (!array[j])
+		return ;
 	z_color = ft_split(array[j], ',');
+	if (!z_color)
+		return ;
 	if (z_color[1])
-		fdf->map.points[i][j].color = ft_atoi_base(z_color[1] + 2,
-				"0123456789ABCDEF");
+		fdf->map.points[i][j].color = ft_atoi_base(z_color[1] + 2, 16);
 	else
 		fdf->map.points[i][j].color = 0xFFFFFF;
 	fdf->map.points[i][j].x = j;
@@ -80,8 +70,8 @@ void	init_map(char *filename, t_fdf *fdf)
 		return ;
 	while (i < fdf->map.height)
 	{
-		fdf->map.points[i] = (t_point *)malloc(sizeof(t_point)
-				* fdf->map.width);
+		fdf->map.points[i] = (t_point *)ft_calloc(fdf->map.width,
+				sizeof(t_point));
 		if (!fdf->map.points[i])
 			return ;
 		i++;
@@ -105,7 +95,7 @@ void	parse_map(char *filename, t_fdf *fdf)
 		line = get_next_line(fd);
 		array = ft_split(line, ' ');
 		x = 0;
-		while (x < fdf->map.width)
+		while (x < fdf->map.width && array[x])
 		{
 			get_points(fdf, y, x, array);
 			x++;
@@ -114,4 +104,5 @@ void	parse_map(char *filename, t_fdf *fdf)
 		free(line);
 		y++;
 	}
+	close(fd);
 }

@@ -3,25 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <eelkabia@student.>                 +#+  +:+       +#+        */
+/*   By: eelkabia <eelkabia@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 13:02:15 by eelkabia          #+#    #+#             */
-/*   Updated: 2025/01/29 04:31:07 by marvin           ###   ########.fr       */
+/*   Updated: 2025/02/02 21:53:06 by eelkabia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf.h"
 
-void	ft_destroy(t_fdf *fdf)
-{
-	if (fdf->window.win)
-		mlx_destroy_window(fdf->window.mlx, fdf->window.win);
-	if (fdf->image.img)
-		mlx_destroy_image(fdf->window.mlx, fdf->image.img);
-}
-
 void	init_fdf(t_fdf *fdf)
 {
+	ft_bzero(fdf, sizeof(t_fdf));
 	fdf->window.mlx = mlx_init();
 	if (!fdf->window.mlx)
 		ft_destroy(fdf);
@@ -38,31 +31,16 @@ void	init_fdf(t_fdf *fdf)
 		ft_destroy(fdf);
 }
 
-int	key_hook(int keycode, t_fdf *fdf)
+void	init_camera(t_fdf *fdf)
 {
-	if (keycode == 65307)
-	{
-		ft_destroy(fdf);
-		exit(0);
-	}
-	else if (keycode == 65361) // Left arrow key
-		fdf->camera.offset_x -= 10;
-	else if (keycode == 65363) // Right arrow key
-		fdf->camera.offset_x += 10;
-	else if (keycode == 65362) // Up arrow key
-		fdf->camera.offset_y -= 10;
-	else if (keycode == 65364) // Down arrow key
-		fdf->camera.offset_y += 10;
-	//for zooming in and out
-	else if (keycode == 61) // + key
-		fdf->camera.zoom += 1;
-	else if (keycode == 45) // - key
-		fdf->camera.zoom -= 1;
-	mlx_clear_window(fdf->window.mlx, fdf->window.win);
-	render_map(fdf);
-	return (0);
+	fdf->camera.zoom = 10;
+	fdf->camera.angle_x = 0;
+	fdf->camera.angle_y = 0;
+	fdf->camera.angle_z = 1;
+	fdf->camera.offset_x = fdf->camera.zoom * fdf->map.width / 2;
+	fdf->camera.offset_y = fdf->camera.zoom * fdf->map.height / 2;
+	fdf->camera.projection = 1;
 }
-	 	// printf("keycode: %d\n", keycode);
 
 int	main(int argc, char **argv)
 {
@@ -76,21 +54,8 @@ int	main(int argc, char **argv)
 		init_camera(&fdf);
 		render_map(&fdf);
 		mlx_key_hook(fdf.window.win, key_hook, &fdf);
+		mlx_hook(fdf.window.win, 17, 0, ft_destroy, &fdf);
 		mlx_loop(fdf.window.mlx);
-		ft_destroy(&fdf); 
+		ft_destroy(&fdf);
 	}
 }
-// int	i = 0;
-// int	j = 0;
-// while (i < fdf.map.height)
-// {
-// 	j = 0;
-// 	while (j < fdf.map.width)
-// 	{
-// 		printf("x: %d, y: %d, z: %d, color: %d\n", fdf.map.points[i][j].x,
-				// fdf.map.points[i][j].y, fdf.map.points[i][j].z,
-				// fdf.map.points[i][j].color);
-// 		j++;
-// 	}
-// 	i++;
-// }
